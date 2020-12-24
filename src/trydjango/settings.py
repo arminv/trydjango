@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# Think of apps as components:
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party apps:
+
+    # Our own apps:
 ]
 
 MIDDLEWARE = [
@@ -49,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# This us how Django figures out routing:
 ROOT_URLCONF = 'trydjango.urls'
 
 TEMPLATES = [
@@ -67,6 +72,7 @@ TEMPLATES = [
     },
 ]
 
+# This is settings for the server:
 WSGI_APPLICATION = 'trydjango.wsgi.application'
 
 
