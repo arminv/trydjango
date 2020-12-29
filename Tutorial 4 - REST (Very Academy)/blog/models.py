@@ -38,3 +38,12 @@ class Post(models.Model):
     status = models.CharField(
         max_length=10, choices=options, default='published'
     )
+    objects = models.Manager()  # default manager
+    postobjects = PostObjects()  # custom manager
+
+    class Meta:
+        # Note, we can specify if data should be returned in ascending/descending order by default:
+        ordering = ('-published',)
+
+    def __str__(self):
+        return self.title
