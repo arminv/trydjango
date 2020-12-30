@@ -121,3 +121,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Note, we can define project-level permissions:
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+        # Note, by default Django allows this permission (we can override it):
+        # 'rest_framework.permissions.AnonymousUser',
+        # Note, we can check for authentication:
+        # 'rest_framework.permissions.IsAuthenticated',
+    ]
+}
