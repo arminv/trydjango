@@ -41,20 +41,22 @@ class Query(graphene.ObjectType):
 
 
 # 1) CREATE/ADD MUTATION:
-# class CategoryMutation(graphene.Mutation):
-#     class Arguments:
-#         name = graphene.String(required=True)
+class CategoryCreateMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
 
-#     category = graphene.Field(CategoryType)
+    category = graphene.Field(CategoryType)
 
-#     @classmethod
-#     def mutate(cls, root, info, name):
-#         category = Category(name=name)
-#         category.save()
-#         return CategoryMutation(category=category)
+    @classmethod
+    def mutate(cls, root, info, name):
+        category = Category(name=name)
+        category.save()
+        return CategoryCreateMutation(category=category)
 
 # 2) UPDATE MUTATION:
-class CategoryMutation(graphene.Mutation):
+
+
+class CategoryUpdateMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID()
         name = graphene.String(required=True)
@@ -66,25 +68,29 @@ class CategoryMutation(graphene.Mutation):
         category = Category.objects.get(id=id)
         category.name = name
         category.save()
-        return CategoryMutation(category=category)
+        return CategoryUpdateMutation(category=category)
 
 # 3) DELETE MUTATION:
-# class CategoryMutation(graphene.Mutation):
-#     class Arguments:
-#         id = graphene.ID()
 
-#     category = graphene.Field(CategoryType)
 
-#     @classmethod
-#     def mutate(cls, root, info, id):
-#         category = Category.objects.get(id=id)
-#         category.delete()
-# #  Note, we don't need to return anything as it is only a delete operation:
-#         return
+class CategoryDeleteMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID()
+
+    category = graphene.Field(CategoryType)
+
+    @classmethod
+    def mutate(cls, root, info, id):
+        category = Category.objects.get(id=id)
+        category.delete()
+        #  Note, we don't need to return anything as it is only a delete operation:
+        return
 
 
 class Mutation(graphene.ObjectType):
-    update_category = CategoryMutation.Field()
+    create_category = CategoryCreateMutation.Field()
+    update_category = CategoryUpdateMutation.Field()
+    delete_category = CategoryDeleteMutation.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
