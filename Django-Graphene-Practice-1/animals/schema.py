@@ -41,7 +41,6 @@ class AnimalCreateMutation(graphene.Mutation):
     def mutate(cls, root, info, name, owner, types, img, ownerId=None):
         if ownerId:
             owner = Owners.objects.get(id=ownerId, username=owner)
-            owner.save()
         else:
             owner = Owners(username=owner)
             owner.save()
