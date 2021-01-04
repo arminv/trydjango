@@ -8,10 +8,11 @@ class AnimalType(DjangoObjectType):
         model = Pets
         fields = ('id', 'types', 'name', 'owner', 'createdAt', 'img')
 
+
 class OwnerType(DjangoObjectType):
     class Meta:
         model = Owners
-        fields = ('id','username')
+        fields = ('id', 'username')
 
 
 class Query(graphene.ObjectType):
@@ -26,4 +27,24 @@ class Query(graphene.ObjectType):
         return Owners.objects.all()
 
 
-schema = graphene.Schema(query=Query)
+class AnimalCreateMutation(graphene.Mutation):
+    class Arguments:
+        name = graphene.String(required=True)
+        owner = graphene.String(required=True)
+
+    animal = graphene.Field(AnimalType)
+
+    @classmethod
+    def mutate(cls, root, info, name, owner):
+        owner = Owners(username=owner)
+        owner.save()
+        animal = Pets(name=name, owner=owner)
+        animal.save()
+        return AnimalCreateMutation(animal=animal)
+
+
+class Mutation(graphene.ObjectType):
+    create_animal = AnimalCreateMutation.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
