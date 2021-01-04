@@ -33,14 +33,14 @@ class AnimalCreateMutation(graphene.Mutation):
         owner = graphene.String(required=True)
         ownerId = graphene.Int(required=False)
         types = graphene.Int(required=True)
-        img = graphene.String(required=False)
+        img = graphene.String(required=True)
 
     animal = graphene.Field(AnimalType)
 
     @classmethod
-    def mutate(cls, root, info, name, owner, ownerId, types, img):
-        owner = Owners(id=ownerId, username=owner)
-        if owner:
+    def mutate(cls, root, info, name, owner, types, img, ownerId=None):
+        if ownerId:
+            owner = Owners.objects.get(id=ownerId, username=owner)
             owner.save()
         else:
             owner = Owners(username=owner)
